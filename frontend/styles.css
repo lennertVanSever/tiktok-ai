@@ -1,0 +1,55 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* Prevent additional scroll */
+}
+
+#videoContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+.videoWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: top 0.3s ease-out;
+}
+
+.videoItem {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: black;
+}
+
+.stats {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: larger;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    padding: 5px;
+}
+
+.summary {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -1;
+    /* Make sure it's behind video elements */
+}
