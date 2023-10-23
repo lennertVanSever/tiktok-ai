@@ -33,7 +33,9 @@ html {
 .stats {
     position: absolute;
     z-index: 20;
-    bottom: env(safe-area-inset-bottom);
+    top: 0;
+    margin-top: auto;
+    margin-bottom: auto;
     font-size: 60px;
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
