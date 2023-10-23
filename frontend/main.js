@@ -1,81 +1,60 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const response = await fetch('videos.json');
-    const videosData = await response.json();
-    const videoContainer = document.getElementById('videoContainer');
-    let currentVideo = 1;
-
-    let initialY = null;
-    let isScrolling = false;
-    let totalWatchedTime = 0;
-
-    videosData.forEach((video, index) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'videoWrapper';
-        wrapper.style.top = `${index * 100}vh`;
-
-        const videoElement = document.createElement('video');
-        videoElement.id = `video${video.id}`;
-        videoElement.className = 'videoItem';
-        videoElement.src = video.src;
-        videoElement.autoplay = index === 0;
-        videoElement.muted = true;
-        videoElement.loop = true;
-
-        let watchedTime = 0;
-
-        const statsElement = document.createElement('div');
-        statsElement.className = 'stats';
-        statsElement.innerText = `Watched: 0s`;
-
-        videoElement.addEventListener('timeupdate', () => {
-            watchedTime += 1;
-            statsElement.innerText = `Watched: ${watchedTime}s`;
-            totalWatchedTime += 1;
-        });
-
-        wrapper.appendChild(videoElement);
-        wrapper.appendChild(statsElement);
-        videoContainer.appendChild(wrapper);
-    });
-
-    function changeVideo(direction) {
-        if (isScrolling) return;
-        isScrolling = true;
-
-        const wrappers = document.querySelectorAll('.videoWrapper');
-        wrappers.forEach((wrapper, index) => {
-            const topValue = parseInt(wrapper.style.top, 10) - 100 * direction + 'vh';
-            wrapper.style.top = topValue;
-
-            if (parseInt(topValue, 10) === 0) {
-                const videoId = videosData[index].id;
-                const videoElement = document.getElementById(`video${videoId}`);
-                videoElement.play();
-            } else {
-                const videoId = videosData[index].id;
-                const videoElement = document.getElementById(`video${videoId}`);
-                videoElement.pause();
-            }
-        });
-
-        setTimeout(() => {
-            isScrolling = false;
-        }, 300);
+function shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
     }
+}
+// source https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 
-    videoContainer.addEventListener('touchstart', e => {
-        initialY = e.touches[0].clientY;
-    }, false);
+document.addEventListener('DOMContentLoaded', () => {
+    // Fetch videos from videos.json
+    fetch('videos.json')
+        .then(response => response.json())
+        .then(videos => {
+            initVideosAndStats(videos); // Initialize videos and stats
 
-    videoContainer.addEventListener('touchmove', e => {
-        if (initialY === null) return;
+            let currentVideo = 1;
+            let totalVideos = videos.length;
+            let initialY = null;
+            const videoContainer = document.getElementById('videoContainer');
 
-        const currentY = e.touches[0].clientY;
-        const diffY = initialY - currentY;
+            videoContainer.addEventListener('touchstart', e => {
+                initialY = e.touches[0].clientY;
+            }, false);
 
-        if (Math.abs(diffY) > 100) {
-            changeVideo(diffY > 0 ? 1 : -1);
-            initialY = null;
-        }
-    }, false);
+            videoContainer.addEventListener('touchmove', e => {
+                if (initialY === null) return;
+
+                const currentY = e.touches[0].clientY;
+                const diffY = initialY - currentY;
+
+                if (Math.abs(diffY) > 100) {
+                    changeVideo(diffY > 0 ? 1 : -1);
+                    initialY = null;
+                }
+            }, false);
+
+            function changeVideo(direction) {
+                const video = document.getElementById(`video${currentVideo}`);
+                video.pause();
+                video.parentElement.style.top = `${-100 * direction}vh`;
+
+                currentVideo += direction;
+
+                if (currentVideo > totalVideos) {
+                    currentVideo = 1;
+                }
+
+                if (currentVideo < 1) {
+                    currentVideo = totalVideos;
+                }
+
+                const nextVideo = document.getElementById(`video${currentVideo}`);
+                nextVideo.parentElement.style.top = '0';
+                nextVideo.play();
+            }
+        })
+        .catch(error => console.error('Error fetching video JSON:', error));
 });
