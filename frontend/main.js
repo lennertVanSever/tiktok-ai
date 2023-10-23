@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 nextVideo.parentElement.style.top = '0';
                 nextVideo.play();
             }
+
         })
         .catch(error => console.error('Error fetching video JSON:', error));
 });
