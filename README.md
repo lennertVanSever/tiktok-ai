@@ -1,6 +1,6 @@
 # tiktok-ai
 
-hello (Santi) test 
-[title](https://www.example.com) hallo iedereen
-1234526
+## Sources
 
+* ChatGPT conversation to create first version of the frontend: [Chat History](https://chat.openai.com/share/4ef4acad-5c27-4adb-964f-f5b59861cfba)
+* Vertical video source for frontend: [Pexels.com](https://www.pexels.com/search/videos/vertical/)
