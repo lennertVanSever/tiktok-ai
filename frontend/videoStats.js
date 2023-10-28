@@ -1,9 +1,11 @@
 function initVideosAndStats(videos) {
     const videoContainer = document.getElementById('videoContainer');
     videos.forEach(video => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+
         const wrapper = document.createElement('div');
         wrapper.className = 'videoWrapper';
-        wrapper.style.top = `${100 * (video.id - 1)}vh`;
 
         const videoElement = document.createElement('video');
         videoElement.id = `video${video.id}`;
@@ -27,7 +29,6 @@ function initVideosAndStats(videos) {
             const currentTime = videoElement.currentTime;
             watchTime = currentTime + watchedTimeAllReplays;
             statsElement.innerText = `Watchtime: ${Math.floor(watchTime)}s`;
-            // totalWatchedTime += currentTime;
         });
 
         videoElement.addEventListener('click', () => {
@@ -40,6 +41,7 @@ function initVideosAndStats(videos) {
 
         wrapper.appendChild(videoElement);
         wrapper.appendChild(statsElement);
-        videoContainer.appendChild(wrapper);
+        slide.appendChild(wrapper);
+        videoContainer.appendChild(slide);
     });
 }
