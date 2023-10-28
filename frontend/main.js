@@ -1,3 +1,6 @@
+// main.js
+import { initVideosAndStats } from './videoStats.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     // Fetch videos from videos.json
     fetch('videos.json')
