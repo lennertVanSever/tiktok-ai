@@ -1,16 +1,21 @@
 // videoStats.js
+let keywordWatchTimes = {};
+
 function htmlToElement(html) {
     const template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
+    html = html.trim();
     template.innerHTML = html;
     return template.content.firstChild;
 }
 
-function initVideosAndStats(videos) {
+export function initVideosAndStats(videos) {
     const videoContainer = document.getElementById('videoContainer');
+
     videos.forEach(video => {
-        let watchedTimeAllReplays = 0;
-        let watchTime = 0;
+        // Initialize watch time for each keyword of this video if not already present
+        video.keys.forEach(keyword => {
+            keywordWatchTimes[keyword] = keywordWatchTimes[keyword] || 0;
+        });
 
         const slide = htmlToElement(`
             <div class="swiper-slide">
@@ -31,13 +36,18 @@ function initVideosAndStats(videos) {
         const stats = slide.querySelector('.stats');
 
         videoElement.addEventListener('ended', () => {
-            watchedTimeAllReplays += videoElement.duration;
+            // Reset the watch time when the video ends and starts over
+            keywordWatchTimes[video.keys] += videoElement.duration;
             videoElement.play();
         });
 
         videoElement.addEventListener('timeupdate', () => {
-            const currentTime = videoElement.currentTime;
-            watchTime = currentTime + watchedTimeAllReplays;
+            // Update the watch time for the current video
+            video.keys.forEach(keyword => {
+                keywordWatchTimes[keyword] += videoElement.currentTime;
+            });
+
+            const watchTime = videoElement.currentTime;
             stats.innerText = `Watchtime: ${Math.floor(watchTime)}s`;
         });
 
@@ -53,4 +63,23 @@ function initVideosAndStats(videos) {
     });
 }
 
-export { initVideosAndStats };
+export function sendKeywordWatchTimes() {
+    // Here you would send the keywordWatchTimes to your backend
+    fetch('/endpoint-to-handle-keyword-data', { // Replace with your actual endpoint
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(keywordWatchTimes),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+    // Reset keyword watch times after sending
+    keywordWatchTimes = {};
+}

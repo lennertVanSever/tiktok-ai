@@ -1,5 +1,5 @@
 // main.js
-import { initVideosAndStats } from './videoStats.js';
+import { initVideosAndStats, sendKeywordWatchTimes } from './videoStats.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Fetch videos from videos.json
@@ -16,6 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
+                },
+                on: {
+                    reachEnd: function () {
+                        console.log('here')
+                        sendKeywordWatchTimes();
+                    },
                 },
             });
 
