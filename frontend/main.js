@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(videos => {
             initVideosAndStats(videos);  // Initialize videos and stats
 
-            const swiper = new Swiper('.swiper-container', {
+            new Swiper('.swiper-container', {
                 direction: 'vertical',
                 slidesPerView: 1,
                 spaceBetween: 0,
@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 on: {
                     reachEnd: function () {
-                        console.log('here')
-                        sendKeywordWatchTimes();
+                        sendKeywordWatchTimes(this);
                     },
                 },
             });

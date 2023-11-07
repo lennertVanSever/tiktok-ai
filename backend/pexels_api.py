@@ -11,10 +11,12 @@ PEXELS_QUERY_PARAMS = {
 }
 
 
-def fetch_videos_from_pexels():
+def fetch_videos_from_pexels(query='random'):
     headers = {'Authorization': PEXELS_API_KEY}
-    response = requests.get(
-        PEXELS_API_URL, headers=headers, params=PEXELS_QUERY_PARAMS)
+    params = PEXELS_QUERY_PARAMS.copy()
+    # Update the query parameter with the provided keyword
+    params['query'] = query
+    response = requests.get(PEXELS_API_URL, headers=headers, params=params)
     response.raise_for_status()
     pexels_videos = response.json()['videos']
     videos = [{

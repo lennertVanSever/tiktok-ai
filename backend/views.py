@@ -17,9 +17,14 @@ def init_app_routes(app):
         similarity_matrix = build_similarity_matrix(tags)
         most_relevant_keyword, score = find_most_relevant_keyword(
             keyword_watch_data, similarity_matrix)
+
+        # Fetch new videos based on the most relevant keyword
+        new_videos = fetch_videos_from_pexels(most_relevant_keyword)
+
         return jsonify({
             'most_relevant_keyword': most_relevant_keyword,
-            'score': score
+            'score': score,
+            'videos': new_videos  # Include the new videos in the response
         }), 200
 
     @app.route('/')

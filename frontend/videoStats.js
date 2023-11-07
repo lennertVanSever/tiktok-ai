@@ -8,7 +8,7 @@ function htmlToElement(html) {
     return template.content.firstChild;
 }
 
-export function initVideosAndStats(videos) {
+export function initVideosAndStats(videos, swiper = null) {
     const videoContainer = document.getElementById('videoContainer');
 
     videos.forEach(video => {
@@ -61,10 +61,14 @@ export function initVideosAndStats(videos) {
 
         videoContainer.appendChild(slide);
     });
+
+    if (swiper) {
+        swiper.update();
+    }
 }
 
-export function sendKeywordWatchTimes() {
-    // Here you would send the keywordWatchTimes to your backend
+export function sendKeywordWatchTimes(swiper) {
+    console.log('keywordWatchTimes', keywordWatchTimes)
     fetch('/endpoint-to-handle-keyword-data', { // Replace with your actual endpoint
         method: 'POST',
         headers: {
@@ -75,6 +79,11 @@ export function sendKeywordWatchTimes() {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+
+            // Check if new videos are returned and initialize them
+            if (data.videos && data.videos.length > 0) {
+                initVideosAndStats(data.videos, swiper);
+            }
         })
         .catch((error) => {
             console.error('Error:', error);
