@@ -1,5 +1,5 @@
 from flask import Flask
-from routes import init_app_routes
+from .routes import init_app_routes
 
 import os
 print(os.environ.get('PYTHONPATH', 'Path not Set'))
