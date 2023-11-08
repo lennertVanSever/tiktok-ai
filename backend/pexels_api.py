@@ -1,5 +1,5 @@
 import requests
-from tags import extract_tags_from_url
+from .tags import extract_tags_from_url
 
 # Replace with your actual Pexels API key
 PEXELS_API_KEY = "2zaMirq9EMl6fmLfvWojBagmIa5YVhd8HArm8ydG7Mgkvlb03Z1rm66x"

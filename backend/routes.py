@@ -1,7 +1,7 @@
 from flask import request, jsonify
-from pexels_api import fetch_videos_from_pexels
-from datamuse_api import build_similarity_matrix
-from recommendation import find_most_relevant_keyword
+from .pexels_api import fetch_videos_from_pexels
+from .datamuse_api import build_similarity_matrix
+from .recommendation import find_most_relevant_keyword
 
 
 def init_app_routes(app):
