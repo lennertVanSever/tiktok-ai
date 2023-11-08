@@ -1,5 +1,5 @@
 from flask import Flask
-from views import init_app_routes
+from routes import init_app_routes
 
 app = Flask(__name__, static_folder="../frontend", static_url_path="")
 
