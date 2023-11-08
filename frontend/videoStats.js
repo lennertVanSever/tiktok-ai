@@ -1,4 +1,6 @@
 // videoStats.js
+let keywordWatchTimes = {};
+
 function htmlToElement(html) {
     const template = document.createElement('template');
     html = html.trim(); // Never return a text node of whitespace as the result
@@ -6,11 +8,15 @@ function htmlToElement(html) {
     return template.content.firstChild;
 }
 
-function initVideosAndStats(videos) {
+export function initVideosAndStats(videos, swiper = null) {
     const videoContainer = document.getElementById('videoContainer');
-    videos.forEach(video => {
-        let watchedTimeAllReplays = 0;
-        let watchTime = 0;
+
+    videos.forEach((video) => {
+        video.keys.forEach((keyword) => {
+            if (!(keyword in keywordWatchTimes)) {
+                keywordWatchTimes[keyword] = 0;
+            }
+        });
 
         const slide = htmlToElement(`
             <div class="swiper-slide">
@@ -31,14 +37,21 @@ function initVideosAndStats(videos) {
         const stats = slide.querySelector('.stats');
 
         videoElement.addEventListener('ended', () => {
-            watchedTimeAllReplays += videoElement.duration;
+            video.keys.forEach((keyword) => {
+                keywordWatchTimes[keyword] += videoElement.duration;
+            });
             videoElement.play();
         });
 
         videoElement.addEventListener('timeupdate', () => {
-            const currentTime = videoElement.currentTime;
-            watchTime = currentTime + watchedTimeAllReplays;
-            stats.innerText = `Watchtime: ${Math.floor(watchTime)}s`;
+            const increment = videoElement.currentTime - (videoElement.lastTime || 0);
+            videoElement.lastTime = videoElement.currentTime;
+
+            video.keys.forEach((keyword) => {
+                keywordWatchTimes[keyword] += increment;
+            });
+
+            stats.innerText = `Watchtime: ${Math.floor(videoElement.currentTime)}s`;
         });
 
         videoElement.addEventListener('click', () => {
@@ -51,6 +64,37 @@ function initVideosAndStats(videos) {
 
         videoContainer.appendChild(slide);
     });
+
+    // Update Swiper instance if it's passed as a parameter
+    if (swiper) {
+        swiper.update();
+    }
 }
 
-export { initVideosAndStats };
+export function sendKeywordWatchTimes(swiper) {
+    console.log('Sending keywordWatchTimes:', keywordWatchTimes);
+    fetch('/endpoint-to-handle-keyword-data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(keywordWatchTimes),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Success:', data);
+
+            // Reset keyword watch times after sending
+            Object.keys(keywordWatchTimes).forEach((keyword) => {
+                keywordWatchTimes[keyword] = 0;
+            });
+
+            // Initialize new videos if any are returned
+            if (data.videos && data.videos.length > 0) {
+                initVideosAndStats(data.videos, swiper);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
