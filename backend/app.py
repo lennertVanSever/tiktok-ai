@@ -1,6 +1,9 @@
 from flask import Flask
 from routes import init_app_routes
 
+import os
+print(os.environ.get('PYTHONPATH', 'Path not Set'))
+
 app = Flask(__name__, static_folder="../frontend", static_url_path="")
 
 # Initialize routes
