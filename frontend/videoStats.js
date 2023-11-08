@@ -3,12 +3,12 @@ let keywordWatchTimes = {};
 
 function htmlToElement(html) {
     const template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
+    html = html.trim();
     template.innerHTML = html;
     return template.content.firstChild;
 }
 
-export function initVideosAndStats(videos, swiper = null) {
+export function initVideosAndStats(videos) {
     const videoContainer = document.getElementById('videoContainer');
 
     videos.forEach((video) => {
@@ -20,15 +20,24 @@ export function initVideosAndStats(videos, swiper = null) {
 
         const slide = htmlToElement(`
             <div class="swiper-slide">
-                <div class="videoWrapper">
-                    <video 
-                        id="video${video.id}" 
-                        class="videoItem" 
-                        src="${video.src}" 
-                        autoplay 
-                        muted
-                    ></video>
-                    <div class="stats">Watchtime: 0s</div>
+                <div class="swiper-container-horizontal">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="videoWrapper">
+                                <video 
+                                    id="video${video.id}" 
+                                    class="videoItem" 
+                                    src="${video.src}" 
+                                    autoplay 
+                                    muted
+                                ></video>
+                                <div class="stats">Watchtime: 0s</div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide stats-screen">
+                            <h1>Put stats here</h1>
+                        </div>
+                    </div>
                 </div>
             </div>
         `);
@@ -65,13 +74,46 @@ export function initVideosAndStats(videos, swiper = null) {
         videoContainer.appendChild(slide);
     });
 
-    // Update Swiper instance if it's passed as a parameter
-    if (swiper) {
-        swiper.update();
-    }
+    initSwipers();
 }
 
-export function sendKeywordWatchTimes(swiper) {
+function initSwipers() {
+    // Initialize the outer (vertical) Swiper
+    const verticalSwiper = new Swiper('.swiper-container', {
+        direction: 'vertical',
+        slidesPerView: 1,
+        spaceBetween: 0,
+        mousewheel: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        on: {
+            reachEnd: function () {
+                // When the user reaches the end of the vertical swiper, send the watch times
+                sendKeywordWatchTimes();
+            },
+        },
+    });
+
+    // Initialize the inner (horizontal) Swipers for each video
+    document.querySelectorAll('.swiper-container-horizontal').forEach((container, index) => {
+        new Swiper(container, {
+            direction: 'horizontal',
+            slidesPerView: 1,
+            spaceBetween: 0,
+            nested: true,
+            on: {
+                slideChangeTransitionEnd: function () {
+                    // This ensures we are on the correct vertical slide after horizontal swipe
+                    verticalSwiper.slideTo(index, 0, false);
+                }
+            }
+        });
+    });
+}
+
+function sendKeywordWatchTimes() {
     console.log('Sending keywordWatchTimes:', keywordWatchTimes);
     fetch('/endpoint-to-handle-keyword-data', {
         method: 'POST',
@@ -80,21 +122,18 @@ export function sendKeywordWatchTimes(swiper) {
         },
         body: JSON.stringify(keywordWatchTimes),
     })
-        .then((response) => response.json())
-        .then((data) => {
+        .then(response => response.json())
+        .then(data => {
             console.log('Success:', data);
-
-            // Reset keyword watch times after sending
             Object.keys(keywordWatchTimes).forEach((keyword) => {
                 keywordWatchTimes[keyword] = 0;
             });
 
-            // Initialize new videos if any are returned
             if (data.videos && data.videos.length > 0) {
-                initVideosAndStats(data.videos, swiper);
+                initVideosAndStats(data.videos);
             }
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('Error:', error);
         });
 }
