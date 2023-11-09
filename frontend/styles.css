@@ -194,3 +194,74 @@ li {
         /* $drag-container-width */
     }
 }
+
+.data-set-title {
+    text-align: left;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-bottom: 0px;
+}
+
+.table-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2em;
+}
+
+.keyword-table,
+.similarity-table {
+    width: 45%;
+    /* Adjust width accordingly */
+    border-collapse: collapse;
+    margin: 10px;
+}
+
+.keyword-table th,
+.keyword-table td,
+.similarity-table th,
+.similarity-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.keyword-table th,
+.similarity-table th {
+    color: black;
+}
+
+.keyword-table td {
+    border-bottom: 1px solid #dddddd;
+}
+
+.similarity-table .keyword-cell {
+    font-weight: bold;
+    border-right: 1px solid #dddddd;
+}
+
+.similarity-table td {
+    border-bottom: none;
+}
+
+.matrix-entry {
+    margin: 5px 0;
+    /* Spacing between entries */
+}
+
+.most-relevant-keyword,
+.similarity-matrix-header {
+    font-weight: bold;
+    padding: 15px;
+    background-color: #eeeeee;
+}
+
+/* Optional: Add responsive design */
+@media (max-width: 768px) {
+    .table-container {
+        flex-direction: column;
+    }
+
+    .keyword-table,
+    .similarity-table {
+        width: 90%;
+    }
+}

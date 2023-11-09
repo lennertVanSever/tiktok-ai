@@ -34,7 +34,9 @@ export function initVideosAndStats(videos) {
                             </div>
                         </div>
                         <div class="swiper-slide stats-screen">
-                            <h1>Put stats here</h1>
+                            <div class="stats-table-container">
+                                <!-- Table will be dynamically inserted here -->
+                            </div>
                         </div>
                     </div>
                 </div>
