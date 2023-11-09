@@ -2,16 +2,16 @@ body,
 html {
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a;
     overflow: hidden;
-    /* Prevent additional scroll */
+    color: white;
+    height: 100%;
 }
 
 .swiper-container {
     width: 100%;
     height: 100%;
-    overflow: hidden;
 }
 
 .swiper-wrapper {
@@ -20,11 +20,12 @@ html {
 
 #videoContainer {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 }
 
-.videoWrapper {
+.videoWrapper,
+.swiper-container-horizontal {
     width: 100%;
     height: 100%;
 }
@@ -33,7 +34,6 @@ html {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background-color: black;
 }
 
 .stats {
@@ -42,9 +42,263 @@ html {
     top: 0;
     margin-top: auto;
     margin-bottom: auto;
-    font-size: 60px;
+    font-size: 1.5em;
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
-    padding: 20px;
+    padding: 10px;
+}
+
+.stats-screen {
+    width: 100%;
+    height: 100%;
+    /* Or set a specific height */
+    overflow-y: auto;
+    /* Enables vertical scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on touch devices */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: black;
+    position: relative;
+    background-color: white;
+    /* Ensure this is here for proper scrolling */
+}
+
+#start-slide {
+    position: relative;
+}
+
+#start-section {
+    margin-left: 30px;
+}
+
+#explaination {
+    max-width: 300px;
+    font-size: 1.5em;
+}
+
+li {
+    margin: 10px 0;
+    font-size: 1.5em;
+}
+
+/* Add a logo style if needed */
+#logo {
+    display: block;
+    width: 100%;
+    /* Adjust as per your logo's aspect ratio */
+    height: auto;
+    margin-bottom: -100px;
+    margin-top: -60px;
+}
+
+.box {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-animation-container {
+    display: block;
+    position: relative;
+    height: 16px;
+    /* $base-width*2 */
+    width: 100px;
+    /* $drag-container-width */
+    /* -$base-width*3 */
+    margin: 0 auto;
+    transform: rotate(90deg);
+
+}
+
+.cta-animation {
+    position: absolute;
+    display: inline-block;
+    height: 24px;
+    /* $base-width*3 */
+    width: 24px;
+    /* $base-width*3 */
+    border-radius: 24px;
+    /* $base-width*3 */
+    background: white;
+    animation-duration: 2.5s;
+    animation-iteration-count: infinite;
+    left: 0;
+    opacity: 0;
+}
+
+.cta-animation.drag-right {
+    animation-name: drag-right;
+    right: 0;
+    left: inherit;
+    animation-delay: 1.25s;
+}
+
+.cta-animation.dot {
+    z-index: 99999;
+    animation-name: drag-dot;
+    left: 0;
+    opacity: 1;
+}
+
+/* Add animation keyframes */
+@keyframes drag-left {
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 0;
+        width: 100px;
+        /* $drag-container-width */
+    }
+}
+
+@keyframes drag-dot {
+
+    0%,
+    100% {
+        left: 0;
+    }
+
+    50% {
+        left: 77px;
+        /* $drag-container-width - $base-width*3 */
+    }
+}
+
+@keyframes drag-right {
+
+    0%,
+    100% {
+        background-color: #ff0050;
+        opacity: 0;
+    }
+
+    25% {
+        background-color: #ff0050;
+
+        opacity: 0.5;
+    }
+
+    50% {
+        background-color: #ff0050;
+
+        opacity: 0;
+        width: 100px;
+        /* $drag-container-width */
+    }
+}
+
+.data-set-title {
+    text-align: left;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-bottom: 0px;
+}
+
+.table-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2em;
+}
+
+#most-relevant-keyword {
+    margin: 10px;
+}
+
+.keyword-table,
+.similarity-table {
+    width: 45%;
+    /* Adjust width accordingly */
+    border-collapse: collapse;
+    margin: 10px;
+}
+
+.keyword-table th,
+.keyword-table td,
+.similarity-table th,
+.similarity-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.keyword-table th,
+.similarity-table th {
+    color: black;
+}
+
+.keyword-table td {
+    border-bottom: 1px solid #dddddd;
+}
+
+.similarity-table .keyword-cell {
+    font-weight: bold;
+    border-right: 1px solid #dddddd;
+}
+
+.similarity-table td {
+    border-bottom: none;
+}
+
+.matrix-entry {
+    margin: 5px 0;
+    /* Spacing between entries */
+}
+
+.most-relevant-keyword,
+.similarity-matrix-header {
+    font-weight: bold;
+    padding: 15px;
+    background-color: #eeeeee;
+}
+
+/* Optional: Add responsive design */
+@media (max-width: 768px) {
+    .table-container {
+        flex-direction: column;
+    }
+
+    .keyword-table,
+    .similarity-table {
+        width: 90%;
+    }
+}
+
+#statsOverview {
+    background-color: white;
+    z-index: 4;
+    position: absolute;
+    width: 100vw;
+    color: black;
+    overflow: auto;
+    height: 100vh;
+    display: none;
+}
+
+button {
+    position: absolute;
+    z-index: 20;
+    top: 0;
+    right: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 1.5em;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    padding: 8px;
+    border: 1px solid white;
 }

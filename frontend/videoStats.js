@@ -1,41 +1,50 @@
-// videoStats.js
-let keywordWatchTimes = {};
+// Import necessary functions from other modules
+import { htmlToElement } from './utils.js';
+import { initSwipers } from './swiper.js';
+import { discardedKeywordWatchTimes, keywordWatchTimes } from './api.js';
 
-function htmlToElement(html) {
-    const template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
-    template.innerHTML = html;
-    return template.content.firstChild;
-}
-
-export function initVideosAndStats(videos, swiper = null) {
+// Function to initialize video statistics and video elements
+export function initVideosAndStats(videos) {
     const videoContainer = document.getElementById('videoContainer');
 
+    // Loop through each video object and create its HTML
     videos.forEach((video) => {
+        // Check for each keyword and initialize it in the watch times object
         video.keys.forEach((keyword) => {
             if (!(keyword in keywordWatchTimes)) {
                 keywordWatchTimes[keyword] = 0;
             }
         });
 
+        // Create the HTML for each video slide
         const slide = htmlToElement(`
             <div class="swiper-slide">
-                <div class="videoWrapper">
-                    <video 
-                        id="video${video.id}" 
-                        class="videoItem" 
-                        src="${video.src}" 
-                        autoplay 
-                        muted
-                    ></video>
-                    <div class="stats">Watchtime: 0s</div>
+                <div class="swiper-container-horizontal">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="videoWrapper">
+                                <video 
+                                    id="video${video.id}" 
+                                    class="videoItem" 
+                                    src="${video.src}" 
+                                    autoplay 
+                                    muted
+                                ></video>
+                                <div class="stats">Watchtime: 0s</div>
+                                <button>View stats</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `);
 
+        // Get references to video and stats elements
+        const buttonElement = slide.querySelector('button');
         const videoElement = slide.querySelector('video');
         const stats = slide.querySelector('.stats');
 
+        // // Event listener for when the video ends
         videoElement.addEventListener('ended', () => {
             video.keys.forEach((keyword) => {
                 keywordWatchTimes[keyword] += videoElement.duration;
@@ -43,17 +52,22 @@ export function initVideosAndStats(videos, swiper = null) {
             videoElement.play();
         });
 
+
+        // Event listener for video time updates
         videoElement.addEventListener('timeupdate', () => {
             const increment = videoElement.currentTime - (videoElement.lastTime || 0);
             videoElement.lastTime = videoElement.currentTime;
 
             video.keys.forEach((keyword) => {
-                keywordWatchTimes[keyword] += increment;
+                if (!discardedKeywordWatchTimes[keyword]) {
+                    keywordWatchTimes[keyword] += increment;
+                }
             });
 
             stats.innerText = `Watchtime: ${Math.floor(videoElement.currentTime)}s`;
         });
 
+        // Event listener for video clicks (play/pause)
         videoElement.addEventListener('click', () => {
             if (videoElement.paused) {
                 videoElement.play();
@@ -62,39 +76,12 @@ export function initVideosAndStats(videos, swiper = null) {
             }
         });
 
+        buttonElement.addEventListener('click', () => {
+            document.getElementById('statsOverview').style.display = 'block';
+        });
+        // Append the newly created slide to the container
         videoContainer.appendChild(slide);
     });
-
-    // Update Swiper instance if it's passed as a parameter
-    if (swiper) {
-        swiper.update();
-    }
-}
-
-export function sendKeywordWatchTimes(swiper) {
-    console.log('Sending keywordWatchTimes:', keywordWatchTimes);
-    fetch('/endpoint-to-handle-keyword-data', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(keywordWatchTimes),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log('Success:', data);
-
-            // Reset keyword watch times after sending
-            Object.keys(keywordWatchTimes).forEach((keyword) => {
-                keywordWatchTimes[keyword] = 0;
-            });
-
-            // Initialize new videos if any are returned
-            if (data.videos && data.videos.length > 0) {
-                initVideosAndStats(data.videos, swiper);
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+    // After all video slides are added to the DOM, initialize the Swiper
+    initSwipers();
 }

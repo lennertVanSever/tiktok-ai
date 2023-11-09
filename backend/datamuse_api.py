@@ -5,7 +5,7 @@ def build_similarity_matrix(tags):
     similarity_matrix = {}
     for tag in tags:
         response = requests.get(
-            f"https://api.datamuse.com/words?rel_jja={tag}")
+            f"https://api.datamuse.com/words?rel_jja={tag}&max=10")
         if response.status_code == 200:
             similar_words = response.json()
             similarity_matrix[tag] = {

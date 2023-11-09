@@ -6,7 +6,7 @@ def extract_tags_from_url(url):
     # List of common words to ignore
     stopwords = {
         'a', 'the', 'in', 'of', 'to', 'and', 'with', 'over', 'for', 'on', 'is', 'by', 'this', 'from', 'at', 'or', 'an',
-        'be', 'as', 'video', 'com', 'www', 'http', 'https'
+        'be', 'as', 'video', 'com', 'www', 'http', 'https', 'its'
     }
     # Parse the URL to get the path
     path = urlparse(url).path
