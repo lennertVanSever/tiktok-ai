@@ -7,6 +7,7 @@ export function initSwipers() {
         slidesPerView: 1,
         spaceBetween: 0,
         mousewheel: true,
+        noSwipingClass: 'swiper-no-swiping',
         pagination: {
             el: '.swiper-pagination',
             clickable: true,

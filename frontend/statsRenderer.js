@@ -31,12 +31,13 @@ export function renderStats(stats) {
                     </table>
                     <table class="similarity-table">
                         <thead>
-                            <tr><th colspan="2">Similarity Matrix for ${stat.mostRelevantKeyword}</th></tr>
+                            <tr><th colspan="2">Similarity Matrix for keywords</th></tr>
                         </thead>
                         <tbody>
                             ${similarityMatrixRows}
                         </tbody>
                     </table>
+                    <p class="most-relevant-keyword"><b>Most Relevant Word: ${stat.mostRelevantKeyword}</b></p>
                 </div>
             </section>
         `;

@@ -33,7 +33,7 @@ export function initVideosAndStats(videos) {
                                 <div class="stats">Watchtime: 0s</div>
                             </div>
                         </div>
-                        <div class="swiper-slide stats-screen">
+                        <div class="swiper-slide stats-screen swiper-no-swiping">
                             <div class="stats-table-container">
                                 <!-- Table will be dynamically inserted here -->
                             </div>
