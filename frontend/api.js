@@ -1,9 +1,12 @@
 import { initVideosAndStats } from "./videoStats.js";
 
 export let keywordWatchTimes = {}; // Keep track of keyword watch times
+export let discardedKeywordWatchTimes = {}; // Keep track of keyword watch times
+export let stats = []
 
 export function sendKeywordWatchTimes() {
     console.log('Sending keywordWatchTimes:', keywordWatchTimes);
+    const tempKeywordWatchTimes = { ...keywordWatchTimes }
     fetch('/endpoint-to-handle-keyword-data', {
         method: 'POST',
         headers: {
@@ -13,9 +16,14 @@ export function sendKeywordWatchTimes() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
+            stats.push({
+                keywordWatchTimes: tempKeywordWatchTimes,
+                mostRelevantKeyword: data.most_relevant_keyword
+            })
+            console.log(stats)
             Object.keys(keywordWatchTimes).forEach((keyword) => {
-                keywordWatchTimes[keyword] = 0;
+                discardedKeywordWatchTimes[keyword] = keywordWatchTimes[keyword];
+                delete keywordWatchTimes[keyword];
             });
             if (data.videos && data.videos.length > 0) {
                 initVideosAndStats(data.videos);

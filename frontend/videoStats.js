@@ -1,7 +1,7 @@
 // Import necessary functions from other modules
 import { htmlToElement } from './utils.js';
 import { initSwipers } from './swiper.js';
-import { keywordWatchTimes } from './api.js';
+import { discardedKeywordWatchTimes, keywordWatchTimes } from './api.js';
 
 // Function to initialize video statistics and video elements
 export function initVideosAndStats(videos) {
@@ -45,7 +45,7 @@ export function initVideosAndStats(videos) {
         const videoElement = slide.querySelector('video');
         const stats = slide.querySelector('.stats');
 
-        // Event listener for when the video ends
+        // // Event listener for when the video ends
         videoElement.addEventListener('ended', () => {
             video.keys.forEach((keyword) => {
                 keywordWatchTimes[keyword] += videoElement.duration;
@@ -59,7 +59,9 @@ export function initVideosAndStats(videos) {
             videoElement.lastTime = videoElement.currentTime;
 
             video.keys.forEach((keyword) => {
-                keywordWatchTimes[keyword] += increment;
+                if (!discardedKeywordWatchTimes[keyword]) {
+                    keywordWatchTimes[keyword] += increment;
+                }
             });
 
             stats.innerText = `Watchtime: ${Math.floor(videoElement.currentTime)}s`;
@@ -77,7 +79,6 @@ export function initVideosAndStats(videos) {
         // Append the newly created slide to the container
         videoContainer.appendChild(slide);
     });
-
     // After all video slides are added to the DOM, initialize the Swiper
     initSwipers();
 }
