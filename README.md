@@ -15,3 +15,4 @@
 * Vertical video source for frontend: [Pexels.com](https://www.pexels.com/search/videos/vertical/)
 * Second ChatGPT conversation to create improved version of the frontend: [Chat History](https://chat.openai.com/share/f2c7408c-272c-4f83-bbf7-0d1de0fb6609)
 * Third ChatGPT conversation to implement backend algorithm: [Chat History](https://chat.openai.com/share/cbb38538-bbc3-40e2-b0cf-9d5c83938000)
+* Fourth ChatGPT conversation to implement the stats, unfortunately it got lost by sending a huge message

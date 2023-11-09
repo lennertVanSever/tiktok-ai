@@ -24,7 +24,8 @@ def init_app_routes(app):
         return jsonify({
             'most_relevant_keyword': most_relevant_keyword,
             'score': score,
-            'videos': new_videos  # Include the new videos in the response
+            'videos': new_videos,
+            'similarity_matrix': similarity_matrix
         }), 200
 
     @app.route('/')
