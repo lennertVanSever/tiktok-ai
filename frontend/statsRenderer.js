@@ -42,7 +42,5 @@ export function renderStats(stats) {
             </section>
         `;
     }).join('');
-    document.querySelectorAll('.stats-table-container').forEach(statsContainer => {
-        statsContainer.innerHTML = statsHtml;
-    })
+    document.querySelector('#statsOverviewContent').innerHTML = statsHtml;
 }

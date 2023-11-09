@@ -9,4 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
             initVideosAndStats(videos);  // Initialize videos and stats
         })
         .catch(error => console.error('Error fetching video JSON:', error));
+
+    document.getElementById('closeButton').addEventListener('click', () => {
+        document.getElementById('statsOverview').style.display = 'none';
+    })
 });

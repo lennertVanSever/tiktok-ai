@@ -18,19 +18,4 @@ export function initSwipers() {
             },
         },
     });
-
-    // Initialize the inner (horizontal) Swipers for each video
-    document.querySelectorAll('.swiper-container-horizontal').forEach((container, index) => {
-        new Swiper(container, {
-            direction: 'horizontal',
-            slidesPerView: 1,
-            spaceBetween: 0,
-            nested: true,
-            on: {
-                slideChangeTransitionEnd: function () {
-                    verticalSwiper.slideTo(index, 0, false);
-                }
-            }
-        });
-    });
 }

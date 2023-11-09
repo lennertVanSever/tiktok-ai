@@ -31,11 +31,7 @@ export function initVideosAndStats(videos) {
                                     muted
                                 ></video>
                                 <div class="stats">Watchtime: 0s</div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide stats-screen swiper-no-swiping">
-                            <div class="stats-table-container">
-                                <!-- Table will be dynamically inserted here -->
+                                <button>View stats</div>
                             </div>
                         </div>
                     </div>
@@ -44,6 +40,7 @@ export function initVideosAndStats(videos) {
         `);
 
         // Get references to video and stats elements
+        const buttonElement = slide.querySelector('button');
         const videoElement = slide.querySelector('video');
         const stats = slide.querySelector('.stats');
 
@@ -54,6 +51,7 @@ export function initVideosAndStats(videos) {
             });
             videoElement.play();
         });
+
 
         // Event listener for video time updates
         videoElement.addEventListener('timeupdate', () => {
@@ -78,6 +76,9 @@ export function initVideosAndStats(videos) {
             }
         });
 
+        buttonElement.addEventListener('click', () => {
+            document.getElementById('statsOverview').style.display = 'block';
+        });
         // Append the newly created slide to the container
         videoContainer.appendChild(slide);
     });
