@@ -60,6 +60,10 @@ html {
     color: black;
 }
 
+#start-slide {
+    position: relative;
+}
+
 #start-section {
     margin-left: 30px;
 }
@@ -80,5 +84,113 @@ li {
     width: 100%;
     /* Adjust as per your logo's aspect ratio */
     height: auto;
-    margin-bottom: -80px;
+    margin-bottom: -100px;
+    margin-top: -60px;
+}
+
+.box {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-animation-container {
+    display: block;
+    position: relative;
+    height: 16px;
+    /* $base-width*2 */
+    width: 100px;
+    /* $drag-container-width */
+    /* -$base-width*3 */
+    margin: 0 auto;
+    transform: rotate(90deg);
+
+}
+
+.cta-animation {
+    position: absolute;
+    display: inline-block;
+    height: 24px;
+    /* $base-width*3 */
+    width: 24px;
+    /* $base-width*3 */
+    border-radius: 24px;
+    /* $base-width*3 */
+    background: white;
+    animation-duration: 2.5s;
+    animation-iteration-count: infinite;
+    left: 0;
+    opacity: 0;
+}
+
+.cta-animation.drag-right {
+    animation-name: drag-right;
+    right: 0;
+    left: inherit;
+    animation-delay: 1.25s;
+}
+
+.cta-animation.dot {
+    z-index: 99999;
+    animation-name: drag-dot;
+    left: 0;
+    opacity: 1;
+}
+
+/* Add animation keyframes */
+@keyframes drag-left {
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 0;
+        width: 100px;
+        /* $drag-container-width */
+    }
+}
+
+@keyframes drag-dot {
+
+    0%,
+    100% {
+        left: 0;
+    }
+
+    50% {
+        left: 77px;
+        /* $drag-container-width - $base-width*3 */
+    }
+}
+
+@keyframes drag-right {
+
+    0%,
+    100% {
+        background-color: #ff0050;
+        opacity: 0;
+    }
+
+    25% {
+        background-color: #ff0050;
+
+        opacity: 0.5;
+    }
+
+    50% {
+        background-color: #ff0050;
+
+        opacity: 0;
+        width: 100px;
+        /* $drag-container-width */
+    }
 }
