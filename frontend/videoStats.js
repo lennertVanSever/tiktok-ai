@@ -40,7 +40,9 @@ export function initVideosAndStats(videos) {
 
         videoElement.addEventListener('ended', () => {
             video.keys.forEach((keyword) => {
-                keywordWatchTimes[keyword] += videoElement.duration;
+                if (videoElement.duration) {
+                    keywordWatchTimes[keyword] += videoElement.duration;
+                }
             });
             videoElement.play();
         });
@@ -51,7 +53,9 @@ export function initVideosAndStats(videos) {
 
             video.keys.forEach((keyword) => {
                 if (!discardedKeywordWatchTimes[keyword]) {
-                    keywordWatchTimes[keyword] += increment;
+                    if (increment) {
+                        keywordWatchTimes[keyword] += increment;
+                    }
                 }
             });
 
