@@ -13,8 +13,18 @@ export function initSwipers() {
             clickable: true,
         },
         on: {
-            reachEnd: function () {
+            reachEnd: () => {
+                console.log("Reached end of videos")
                 sendKeywordWatchTimes();
+            },
+            reachBeginning: () => {
+                console.log("Back on welcome page")
+            },
+            slideNextTransitionStart: () => {
+                console.log("Slide to next video")
+            },
+            slidePrevTransitionStart: () => {
+                console.log("Slide to previous video")
             },
         },
     });

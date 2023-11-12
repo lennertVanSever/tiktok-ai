@@ -1,22 +1,17 @@
-// Import necessary functions from other modules
 import { htmlToElement } from './utils.js';
 import { initSwipers } from './swiper.js';
 import { discardedKeywordWatchTimes, keywordWatchTimes } from './api.js';
 
-// Function to initialize video statistics and video elements
 export function initVideosAndStats(videos) {
     const videoContainer = document.getElementById('videoContainer');
 
-    // Loop through each video object and create its HTML
     videos.forEach((video) => {
-        // Check for each keyword and initialize it in the watch times object
         video.keys.forEach((keyword) => {
             if (!(keyword in keywordWatchTimes)) {
                 keywordWatchTimes[keyword] = 0;
             }
         });
 
-        // Create the HTML for each video slide
         const slide = htmlToElement(`
             <div class="swiper-slide">
                 <div class="swiper-container-horizontal">
@@ -39,12 +34,10 @@ export function initVideosAndStats(videos) {
             </div>
         `);
 
-        // Get references to video and stats elements
         const buttonElement = slide.querySelector('button');
         const videoElement = slide.querySelector('video');
         const stats = slide.querySelector('.stats');
 
-        // // Event listener for when the video ends
         videoElement.addEventListener('ended', () => {
             video.keys.forEach((keyword) => {
                 keywordWatchTimes[keyword] += videoElement.duration;
@@ -52,8 +45,6 @@ export function initVideosAndStats(videos) {
             videoElement.play();
         });
 
-
-        // Event listener for video time updates
         videoElement.addEventListener('timeupdate', () => {
             const increment = videoElement.currentTime - (videoElement.lastTime || 0);
             videoElement.lastTime = videoElement.currentTime;
@@ -66,8 +57,6 @@ export function initVideosAndStats(videos) {
 
             stats.innerText = `Watchtime: ${Math.floor(videoElement.currentTime)}s`;
         });
-
-        // Event listener for video clicks (play/pause)
         videoElement.addEventListener('click', () => {
             if (videoElement.paused) {
                 videoElement.play();
@@ -77,11 +66,28 @@ export function initVideosAndStats(videos) {
         });
 
         buttonElement.addEventListener('click', () => {
+            console.log("open stats")
             document.getElementById('statsOverview').style.display = 'block';
         });
-        // Append the newly created slide to the container
+
         videoContainer.appendChild(slide);
+
+        // Define the callback function for the Intersection Observer
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    console.log(`Keywords of video playing:\n   * ${video.keys.join('\n   * ')}`);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, {
+            threshold: 1.0
+        });
+
+        // Observe the video element
+        observer.observe(videoElement);
     });
-    // After all video slides are added to the DOM, initialize the Swiper
+
     initSwipers();
 }

@@ -6,7 +6,7 @@ export let discardedKeywordWatchTimes = {}; // Keep track of keyword watch times
 const stats = []
 
 export function sendKeywordWatchTimes() {
-    console.log('Sending keywordWatchTimes:', keywordWatchTimes);
+    // console.log('Sending keywordWatchTimes:', keywordWatchTimes);
     const tempKeywordWatchTimes = { ...keywordWatchTimes }
     fetch('/endpoint-to-handle-keyword-data', {
         method: 'POST',
