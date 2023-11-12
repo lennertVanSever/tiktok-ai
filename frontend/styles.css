@@ -302,3 +302,12 @@ button {
     padding: 8px;
     border: 1px solid white;
 }
+
+#statsOverviewContent h1 {
+    margin-top: 50px;
+    margin-left: 10px;
+}
+
+#closeButton {
+    position: fixed;
+}
