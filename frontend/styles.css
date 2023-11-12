@@ -42,7 +42,7 @@ html {
     top: 0;
     margin-top: auto;
     margin-bottom: auto;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
@@ -77,12 +77,12 @@ html {
 
 #explaination {
     max-width: 300px;
-    font-size: 1.5em;
+    font-size: 1.5rem;
 }
 
 li {
     margin: 10px 0;
-    font-size: 1.5em;
+    font-size: 1.5rem;
 }
 
 /* Add a logo style if needed */
@@ -205,14 +205,16 @@ li {
 .data-set-title {
     text-align: left;
     font-weight: bold;
-    margin-left: 10px;
+    margin-top: 10px !important;
+    margin-left: 0.5rem !important;
     margin-bottom: 0px;
+    font-size: 2em;
 }
 
 .table-container {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 2em;
+    margin-bottom: 2rem;
 }
 
 #most-relevant-keyword {
@@ -253,9 +255,23 @@ li {
     border-bottom: none;
 }
 
+.matrix-keyword {
+    margin-left: 0.5rem;
+    margin-bottom: -10px;
+    margin-top: 15px;
+    font-size: 1.2rem;
+}
+
 .matrix-entry {
     margin: 5px 0;
+    font-size: 1.2rem;
+    font-weight: normal;
     /* Spacing between entries */
+}
+
+h2 {
+    margin-left: 0.5rem;
+    margin-bottom: 5px;
 }
 
 .most-relevant-keyword,
@@ -286,6 +302,7 @@ li {
     overflow: auto;
     height: 100vh;
     display: none;
+    font-size: 1rem;
 }
 
 button {
@@ -295,7 +312,7 @@ button {
     right: 0;
     margin-top: auto;
     margin-bottom: auto;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);

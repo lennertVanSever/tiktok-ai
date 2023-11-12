@@ -10,16 +10,17 @@ export function renderStats(stats) {
         let similarityMatrixRows = Object.entries(stat.similarityMatrix)
             .map(([keyword, matrix]) => {
                 let matrixEntries = Object.entries(matrix)
-                    .map(([word, score]) => `<div class="matrix-entry">${word}: ${score}</div>`)
+                    .map(([word, score]) => `<li class="matrix-entry">${word}: ${score}</li>`)
                     .join('');
-                return `<tr><td class="keyword-cell">${keyword}</td><td>${matrixEntries}</td></tr>`;
+                return `<h3 class="matrix-keyword">${keyword}</h3><ul>${matrixEntries}</ul>`;
             })
             .join('');
 
         // Combine the two sets of rows and wrap in separate table tags
         return `
             <section class="data-set">
-                <h3 class="data-set-title">Dataset ${index + 1}</h3>
+                <h1 class="data-set-title">Dataset ${index + 1}</h1>
+                <h2>Keyword watch time</h1>
                 <div class="table-container">
                     <table class="keyword-table">
                         <thead>
@@ -30,12 +31,8 @@ export function renderStats(stats) {
                         </tbody>
                     </table>
                     <table class="similarity-table">
-                        <thead>
-                            <tr><th colspan="2">Similarity Matrix for keywords</th></tr>
-                        </thead>
-                        <tbody>
+                            <h2>Similarity Matrix for keywords</2>
                             ${similarityMatrixRows}
-                        </tbody>
                     </table>
                     <p class="most-relevant-keyword"><b>Most Relevant Word: ${stat.mostRelevantKeyword}</b></p>
                 </div>
