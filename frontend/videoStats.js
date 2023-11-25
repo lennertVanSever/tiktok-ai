@@ -38,15 +38,6 @@ export function initVideosAndStats(videos) {
         const videoElement = slide.querySelector('video');
         const stats = slide.querySelector('.stats');
 
-        videoElement.addEventListener('ended', () => {
-            video.keys.forEach((keyword) => {
-                if (videoElement.duration) {
-                    keywordWatchTimes[keyword] += videoElement.duration;
-                }
-            });
-            videoElement.play();
-        });
-
         videoElement.addEventListener('timeupdate', () => {
             const increment = videoElement.currentTime - (videoElement.lastTime || 0);
             videoElement.lastTime = videoElement.currentTime;
@@ -61,6 +52,7 @@ export function initVideosAndStats(videos) {
 
             stats.innerText = `Watchtime: ${Math.floor(videoElement.currentTime)}s`;
         });
+
         videoElement.addEventListener('click', () => {
             if (videoElement.paused) {
                 videoElement.play();
