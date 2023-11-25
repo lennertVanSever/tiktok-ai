@@ -18,11 +18,11 @@ As mentioned before, TikTok uses *Neighborhood-based Collaborative Filtering* an
 
 ![Flow diagram of TikTok demo app](flow.drawio.png)
 
-A diagram is the best way to show the flow of the app. As you can see, it's cyclical which hints towards the addictiveness of TikTok. The user will keep on getting more and more curiated videos.
+A diagram is the best way to show the flow of the app. As you can see, it's cyclical which hints towards the addictiveness of TikTok. The user will keep on getting more and more curated videos.
 
 ## Filling in the gaps
 
-Our demo app only covers the core part of TikTok, swiping from one video to another and getting an infinite amount of curiated videos. We don't have videos made by users and we don't have watchtime data from other users. To cover these gaps, we used the following API's:
+Our demo app only covers the core part of TikTok, swiping from one video to another and getting an infinite amount of curated videos. We don't have videos made by users and we don't have watchtime data from other users. To cover these gaps, we used the following APIs:
 
 * [Pexels API](https://www.pexels.com/api/): a free to use videos API that allowed us to get videos by keyword. Tags were not given but with [this code](https://github.com/lennertVanSever/tiktok-ai/blob/main/backend/tags.py) we were able to extract keywords from the url. The videos are not engaging which makes our app boring.
 
@@ -30,7 +30,7 @@ Our demo app only covers the core part of TikTok, swiping from one video to anot
 
 ## Executing the algorithm
 
-The first 3 videos are always the same videos. When the user start swiping, the watchtime per keyword of every video is tracked. Once the end of the videos is reached, the watchtime data is send to the server.
+The first 3 videos are always the same videos. When the user starts swiping, the watchtime per keyword of every video is tracked. Once the end of the videos is reached, the watchtime data is sent to the server.
 
 | Keyword     | Watchtime |
 |-------------|-----------|
@@ -45,7 +45,7 @@ The first 3 videos are always the same videos. When the user start swiping, the 
 | board       | 1.59s     |
 | essence     | 1.59s     |
 
-When the server receives the data it will first look for related words using the Datamuse API. It has to do this for every keyword which is often slow. With the related words and scores, a similarity matrix will be build. The next step is to use the keyword watchtime data and similarity matrix to get the most relevant next keyword. This is done by executing the *Item-based Collaborative Filtering* algorithm. It sounds complicated but actually it's only 8 lines of code.
+When the server receives the data it will first look for related words using the Datamuse API. It has to do this for every keyword which is often slow. With the related words and scores, a similarity matrix will be built. The next step is to use the keyword watchtime data and similarity matrix to get the most relevant next keyword. This is done by executing the *Item-based Collaborative Filtering* algorithm. It sounds complicated but actually it's only 8 lines of code.
 
 ```python
 def find_most_relevant_keyword(keyword_watch_data, similarity_matrix):
@@ -67,25 +67,25 @@ Now that we have the most relevant keyword, we can use it to get more videos fro
 
 The scope of this demo app is only academic. Some improvements could be made to make the app smoother:
 
-* Currently the app will only start to load the new videos when the user has reached the end of the videos. This is suboptimal in an infinite scrolling experience like TikTok. The system should already load in new videos once the user is getting closer to the end so that there is a constant stream.
-* The similarity matrix is calculated on run time which is unecessary. It could be pre-calculated to make the algorithm faster. This optimization can probably reduce the load time by more than 90%.
-* Removing statistics, now there is some logging and a statistics page for research purpose. Not necessary but it will unlikely impact performance 
+- Currently, the app will only start to load the new videos when the user has reached the end of the videos. This is suboptimal in an infinite scrolling experience like TikTok. The system should already load in new videos once the user is getting closer to the end so that there is a constant stream.
+- The similarity matrix is calculated on run time which is unnecessary. It could be pre-calculated to make the algorithm faster. This optimization can probably reduce the load time by more than 90%.
+- Removing statistics, now there is some logging and a statistics page for research purpose. Not necessary but it will unlikely impact performance.
 
 ## Tech Stack
 
 - Frontend: HTML, CSS and Vanilla Javascript. Only library used is [Swiper](https://swiperjs.com/).
-- Backend: Python. Libraries used are Flask and Request
+- Backend: Python. Libraries used are Flask and Request.
 
 This app does not have a database to store data, the backend is also redundant since everything could have been run directly from the frontend. We decided to use a backend since we could write it in Python, a language used in this Postgraduate.
 
 ## Demo Conclusion
 
-The TikTok demo app highlights how the TikTok algorithm works. In it's simpliest form, it is not complicated. There is no black box and everything can be explained. However, this app is unfit for production. It should rely on user content and user data. It doesn't take benefit of social data. 
+The TikTok demo app highlights how the TikTok algorithm works. In its simplest form, it is not complicated. There is no black box and everything can be explained. However, this app is unfit for production. It should rely on user content and user data. It doesn't take benefit of social data.
 
 ## Sources
 
-* ChatGPT conversation to create first version of the frontend: [Chat History](https://chat.openai.com/share/4ef4acad-5c27-4adb-964f-f5b59861cfba)
-* Vertical video source for frontend: [Pexels.com](https://www.pexels.com/search/videos/vertical/)
-* Second ChatGPT conversation to create improved version of the frontend: [Chat History](https://chat.openai.com/share/f2c7408c-272c-4f83-bbf7-0d1de0fb6609)
-* Third ChatGPT conversation to implement backend algorithm: [Chat History](https://chat.openai.com/share/cbb38538-bbc3-40e2-b0cf-9d5c83938000)
-* Fourth ChatGPT conversation to implement the stats, unfortunately it got lost by sending a huge message
+- ChatGPT conversation to create the first version of the frontend: [Chat History](https://chat.openai.com/share/4ef4acad-5c27-4adb-964f-f5b59861cfba)
+- Vertical video source for frontend: [Pexels.com](https://www.pexels.com/search/videos/vertical/)
+- Second ChatGPT conversation to create an improved version of the frontend: [Chat History](https://chat.openai.com/share/f2c7408c-272c-4f83-bbf7-0d1de0fb6609)
+- Third ChatGPT conversation to implement backend algorithm: [Chat History](https://chat.openai.com/share/cbb38538-bbc3-40e2-b0cf-9d5c83938000)
+- Fourth ChatGPT conversation to implement the stats, unfortunately, it got lost by sending a huge message
